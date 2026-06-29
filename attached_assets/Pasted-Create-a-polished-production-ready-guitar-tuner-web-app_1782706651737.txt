@@ -1,0 +1,41 @@
+Create a polished, production-ready guitar tuner web app for client use in Replit. It should feel like a high-quality product similar to GuitarTuna, with multiple guitar tuning options, reliable microphone handling, and no obvious bugs or rough edges.
+
+Use React + Vite + TypeScript in the browser with the Web Audio API. The app must request microphone access only after a user click, handle permission denial gracefully, and work only in secure browser contexts. Build clear error states for denied permission, unsupported browsers, and missing audio input. Make the UI mobile-friendly, responsive, fast, and visually professional.
+
+Core features:
+- Real-time pitch detection using autocorrelation or YIN.
+- Display detected note, frequency, and cents offset.
+- Smooth needle/gauge tuner visualization.
+- Multiple tuning presets: Standard E, Drop D, Open G, DADGAD, Half-step Down, 7-string standard, and chromatic mode.
+- Custom A4 calibration, default 440 Hz.
+- Reference tone playback for tuning.
+- Stable smoothing so the tuner does not jump around.
+- Clean start/stop mic controls.
+- Dark, modern, client-ready UI with subtle animations.
+- Settings panel for tuning preset, reference pitch, and sound options.
+
+Quality requirements:
+- Make the app reliable enough to present to clients.
+- Avoid placeholder UI, broken controls, console errors, and dead code.
+- Add proper loading states, empty states, and fallback states.
+- Include accessibility basics like readable contrast, large touch targets, and keyboard-friendly controls.
+- Keep the code structured, maintainable, and easy to extend.
+- Separate the logic into components such as AudioEngine, PitchDetector, TunerDisplay, TuningPresets, SettingsPanel, and use hooks where appropriate.
+- Add basic tests for pitch detection and note mapping.
+- Include a polished README with setup, run, and deployment steps for Replit.
+
+Technical preferences:
+- Prefer TypeScript.
+- Prefer React.
+- Use the Web Audio API for microphone capture and analysis.
+- Use a lightweight, production-friendly approach.
+- If needed, add a simple backend only for serving or configuration, but keep the main tuner fully client-side.
+
+Deliverables:
+- Complete working code.
+- Clean file structure.
+- All required dependencies in package.json.
+- Client-ready UI and behavior.
+- No major issues on first run in Replit.
+
+Please generate the full project now.
