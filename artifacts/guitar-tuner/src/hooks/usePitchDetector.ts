@@ -34,11 +34,26 @@ function detectPitch(buffer: Float32Array, sampleRate: number): number | null {
     windowed[i] = buffer[i] * (0.54 - 0.46 * Math.cos((2 * Math.PI * i) / size));
   }
 
-  // Compute autocorrelation only up to half the buffer
-  // (frequencies down to ~43 Hz at 44100 / 1024)
   const halfSize = Math.floor(size / 2);
-  const correlation = new Float32Array(halfSize);
-  for (let lag = 0; lag < halfSize; lag++) {
+
+  // Guitar frequency range: ~27.5 Hz (low B on 7-string) to ~1400 Hz (high fret E)
+  // Only compute correlation for lags in this range instead of full halfSize.
+  const MIN_GUITAR_FREQ = 27.5;
+  const MAX_GUITAR_FREQ = 1400;
+  const minLag = Math.max(1, Math.floor(sampleRate / MAX_GUITAR_FREQ));   // ~31 @44.1k
+  const maxLag = Math.min(halfSize, Math.ceil(sampleRate / MIN_GUITAR_FREQ) + 2); // ~1604 @44.1k
+
+  const correlation = new Float32Array(maxLag + 1);
+
+  // Compute lag-0 energy separately
+  let corr0 = 0;
+  for (let i = 0; i < size; i++) {
+    corr0 += windowed[i] * windowed[i];
+  }
+  correlation[0] = corr0;
+
+  // Compute autocorrelation only for lags in the guitar pitch range
+  for (let lag = 1; lag <= maxLag; lag++) {
     let sum = 0;
     for (let i = 0; i < size - lag; i++) {
       sum += windowed[i] * windowed[i + lag];
@@ -47,15 +62,17 @@ function detectPitch(buffer: Float32Array, sampleRate: number): number | null {
   }
 
   // Find first local minimum after lag 0 (where the correlation dips)
+  // Limited to minLag — the dip for guitar always occurs at very low lags (~1-5)
+  const dipSearchEnd = Math.min(maxLag - 1, minLag + 10);
   let minPos = 1;
-  while (minPos < halfSize - 1 && correlation[minPos + 1] < correlation[minPos]) {
+  while (minPos < dipSearchEnd && correlation[minPos + 1] < correlation[minPos]) {
     minPos++;
   }
 
-  // Find the strongest peak after the first dip
+  // Find the strongest peak after the first dip, within guitar range
   let maxCorr = -Infinity;
   let maxCorrPos = -1;
-  for (let i = minPos; i < halfSize; i++) {
+  for (let i = minPos; i <= maxLag; i++) {
     if (correlation[i] > maxCorr) {
       maxCorr = correlation[i];
       maxCorrPos = i;

@@ -14,11 +14,21 @@ export default function TunerGauge({ cents }: TunerGaugeProps) {
   const isSharp = cents !== null && cents > 10;
   const isPlaying = cents !== null;
 
+  const absCents = Math.abs(clampedCents);
   const needleColor = isInTune
     ? 'var(--color-success)'
-    : Math.abs(clampedCents) > 30
+    : absCents > 30
     ? 'var(--color-destructive)'
     : 'var(--color-warning)';
+
+  /* Color-grade the arc: green center (0-10¢), amber mid (10-30¢), red outer (30-50¢) */
+  const arcColor = !isPlaying
+    ? 'var(--color-card-border)'
+    : absCents <= 10
+    ? 'var(--color-success)'
+    : absCents <= 30
+    ? 'var(--color-warning)'
+    : 'var(--color-destructive)';
 
   return (
     <div className="relative w-full max-w-md mx-auto flex items-center justify-center gap-3">
@@ -49,13 +59,33 @@ export default function TunerGauge({ cents }: TunerGaugeProps) {
       {/* Gauge SVG */}
       <div className="relative flex-1 aspect-[2/1] overflow-hidden min-w-0">
         <svg viewBox="0 0 200 100" className="w-full h-full overflow-visible">
-          {/* Background Arc */}
+          {/* Background Arc — color-graded by zone */}
           <path
-            d="M 20 90 A 80 80 0 0 1 180 90"
+            d="M 20 90 A 80 80 0 0 1 60 90"
             fill="none"
-            stroke="var(--color-card-border)"
-            strokeWidth="4"
+            stroke={arcColor}
+            strokeWidth="6"
             strokeLinecap="round"
+            className="transition-colors duration-200"
+            opacity={isPlaying ? 0.5 : 0.2}
+          />
+          <path
+            d="M 60 90 A 80 80 0 0 1 140 90"
+            fill="none"
+            stroke={arcColor}
+            strokeWidth="6"
+            strokeLinecap="round"
+            className="transition-colors duration-200"
+            opacity={isPlaying ? 0.35 : 0.15}
+          />
+          <path
+            d="M 140 90 A 80 80 0 0 1 180 90"
+            fill="none"
+            stroke={arcColor}
+            strokeWidth="6"
+            strokeLinecap="round"
+            className="transition-colors duration-200"
+            opacity={isPlaying ? 0.5 : 0.2}
           />
 
           {/* Tick Marks */}
@@ -82,15 +112,6 @@ export default function TunerGauge({ cents }: TunerGaugeProps) {
               />
             );
           })}
-
-          {/* Center Zone Highlight */}
-          <path
-            d="M 85 90 A 80 80 0 0 1 115 90"
-            fill="none"
-            stroke={isInTune ? 'var(--color-success)' : 'rgba(255,255,255,0.05)'}
-            strokeWidth="10"
-            className="transition-colors duration-200"
-          />
 
           {/* Needle */}
           {isPlaying && (

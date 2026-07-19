@@ -25,10 +25,10 @@ export default function ReferenceTone({ targetMidi, a4, volume }: ReferenceToneP
     <div className="flex flex-col items-center justify-center my-4">
       <button
         onClick={() => isPlaying ? stopTone() : playTone(freq, volume)}
-        className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${
-          isPlaying 
-            ? 'bg-warning/20 text-warning border border-warning/50 animate-pulse'
-            : 'bg-card text-card-foreground border border-card-border hover:bg-accent'
+        className={`min-h-[44px] min-w-[44px] flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+          isPlaying
+            ? 'bg-warning/20 text-warning border-2 border-warning/60 shadow-[0_0_20px_rgba(214,160,67,0.4)]'
+            : 'bg-card text-card-foreground border border-card-border hover:bg-accent hover:text-foreground active:scale-95'
         }`}
         data-testid="button-reference-tone"
       >

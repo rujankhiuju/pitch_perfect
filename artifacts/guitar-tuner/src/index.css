@@ -48,49 +48,55 @@
   --radius-lg: 0.5rem;
 }
 
+/*
+ * Single-theme dark neutral palette (no light mode — guitar tuners are
+ * typically used in dim environments where a dark theme is preferred.
+ * Adding light mode would require a separate :root block with inverted
+ * lightness values and would double the maintenance surface.)
+ */
 :root, .dark {
-  /* deep charcoal #0d0f12 */
-  --background: 216 16% 6%;
-  --foreground: 210 20% 98%;
+  /* warm charcoal (not pure black) */
+  --background: 30 8% 8%;
+  --foreground: 30 6% 92%;
 
-  /* #161a20 */
-  --card: 216 18% 11%;
-  --card-foreground: 210 20% 98%;
-  --card-border: 218 14% 19%;
+  /* #1c1a18 */
+  --card: 30 7% 12%;
+  --card-foreground: 30 6% 92%;
+  --card-border: 30 6% 18%;
 
-  --popover: 216 18% 11%;
-  --popover-foreground: 210 20% 98%;
-  --popover-border: 218 14% 19%;
+  --popover: 30 7% 12%;
+  --popover-foreground: 30 6% 92%;
+  --popover-border: 30 6% 18%;
 
-  /* #2a2f38 */
-  --border: 218 14% 19%;
-  --input: 218 14% 19%;
-  --ring: 217 91% 60%;
+  /* #2c2925 */
+  --border: 30 6% 18%;
+  --input: 30 6% 18%;
+  --ring: 30 5% 50%;
 
-  /* electric blue #3b82f6 */
-  --primary: 217 91% 60%;
-  --primary-foreground: 0 0% 100%;
+  /* warm stone (#7d7469) */
+  --primary: 30 8% 45%;
+  --primary-foreground: 30 8% 8%;
 
-  --secondary: 215 16% 25%;
-  --secondary-foreground: 210 20% 98%;
+  --secondary: 30 6% 20%;
+  --secondary-foreground: 30 6% 88%;
 
-  /* #64748b */
-  --muted: 215 16% 25%;
-  --muted-foreground: 215 18% 47%;
+  /* #6b6560 */
+  --muted: 30 5% 22%;
+  --muted-foreground: 30 5% 45%;
 
-  --accent: 215 16% 25%;
-  --accent-foreground: 210 20% 98%;
+  --accent: 30 5% 22%;
+  --accent-foreground: 30 6% 92%;
 
-  /* red #ef4444 */
-  --destructive: 0 84% 60%;
+  /* desaturated red #d65c5c (still clearly red at a glance) */
+  --destructive: 0 58% 58%;
   --destructive-foreground: 0 0% 100%;
 
-  /* green #22c55e */
-  --success: 142 71% 45%;
+  /* desaturated green #4ab47a */
+  --success: 150 42% 48%;
   --success-foreground: 0 0% 100%;
 
-  /* amber #f59e0b */
-  --warning: 38 92% 50%;
+  /* desaturated amber #d6a043 */
+  --warning: 38 64% 54%;
   --warning-foreground: 0 0% 100%;
 
   --radius: 0.5rem;

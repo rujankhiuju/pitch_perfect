@@ -6,7 +6,7 @@ import NoteDisplay from '../components/NoteDisplay';
 import TuningPresets from '../components/TuningPresets';
 import StringSelector from '../components/StringSelector';
 import ReferenceTone from '../components/ReferenceTone';
-import Controls from '../components/MicButton';
+import MicButton from '../components/MicButton';
 import SettingsPanel from '../components/SettingsPanel';
 
 export default function TunerPage() {
@@ -27,9 +27,9 @@ export default function TunerPage() {
     : undefined;
 
   return (
-    <div className="relative min-h-[100dvh] w-full flex flex-col items-center py-8">
+    <div className="relative min-h-[100dvh] w-full flex flex-col items-center pt-4 pb-2 safe-area-padding">
       {/* Top Presets Navigation */}
-      <div className="w-full max-w-2xl px-4">
+      <div className="w-full max-w-2xl px-4 pt-[env(safe-area-inset-top,0px)]">
         <TuningPresets 
           activePreset={activePreset} 
           onSelect={(preset) => {
@@ -49,7 +49,8 @@ export default function TunerPage() {
         <StringSelector 
           preset={activePreset} 
           targetMidi={targetMidi} 
-          onSelectTarget={setTargetMidi} 
+          onSelectTarget={setTargetMidi}
+          pitchData={pitchData}
         />
 
         <ReferenceTone 
@@ -59,7 +60,16 @@ export default function TunerPage() {
         />
       </div>
 
-      <Controls 
+      {/* Empty state hint when listening but no note detected */}
+      {isListening && !pitchData && (
+        <div className="fixed inset-x-0 top-1/3 flex justify-center pointer-events-none z-10">
+          <span className="text-muted-foreground/60 text-lg font-semibold tracking-wide animate-pulse">
+            Play a string to begin
+          </span>
+        </div>
+      )}
+
+      <MicButton 
         isListening={isListening} 
         onStart={start} 
         onStop={stop} 
