@@ -18,7 +18,7 @@ if (rawPort) {
 // Defaults to /Pitch_Perfect/ (inferred from remote origin
 // git@github.com:rujankhiuju/Pitch_Perfect.git).  Override via
 // BASE_PATH env var when needed (e.g. local dev with base: '/').
-const basePath = process.env.BASE_PATH || '/Pitch-Perfect/';
+const basePath = process.env.BASE_PATH || '/pitch_perfect/';
 
 export default defineConfig({
   base: basePath,
