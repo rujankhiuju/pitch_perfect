@@ -4,27 +4,21 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
+// PORT is only required for the dev/preview server, not for production builds.
 const rawPort = process.env.PORT;
-
-if (!rawPort) {
-  throw new Error(
-    "PORT environment variable is required but was not provided.",
-  );
+let port: number | undefined;
+if (rawPort) {
+  port = Number(rawPort);
+  if (Number.isNaN(port) || port <= 0) {
+    throw new Error(`Invalid PORT value: "${rawPort}"`);
+  }
 }
 
-const port = Number(rawPort);
-
-if (Number.isNaN(port) || port <= 0) {
-  throw new Error(`Invalid PORT value: "${rawPort}"`);
-}
-
-const basePath = process.env.BASE_PATH;
-
-if (!basePath) {
-  throw new Error(
-    "BASE_PATH environment variable is required but was not provided.",
-  );
-}
+// GitHub Pages project site — served under /<repo-name>/.
+// Defaults to /Pitch_Perfect/ (inferred from remote origin
+// git@github.com:rujankhiuju/Pitch_Perfect.git).  Override via
+// BASE_PATH env var when needed (e.g. local dev with base: '/').
+const basePath = process.env.BASE_PATH || '/Pitch_Perfect/';
 
 export default defineConfig({
   base: basePath,
@@ -58,18 +52,22 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
-  server: {
-    port,
-    strictPort: true,
-    host: "0.0.0.0",
-    allowedHosts: true,
-    fs: {
-      strict: true,
-    },
-  },
-  preview: {
-    port,
-    host: "0.0.0.0",
-    allowedHosts: true,
-  },
+  ...(port
+    ? {
+        server: {
+          port,
+          strictPort: true,
+          host: "0.0.0.0",
+          allowedHosts: true,
+          fs: {
+            strict: true,
+          },
+        },
+        preview: {
+          port,
+          host: "0.0.0.0",
+          allowedHosts: true,
+        },
+      }
+    : {}),
 });
