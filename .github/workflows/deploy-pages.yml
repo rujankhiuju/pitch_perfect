@@ -29,10 +29,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Setup pnpm via corepack
-        run: |
-          corepack enable
-          corepack prepare pnpm@11 --activate
+      - name: Setup pnpm
+        run: npm install -g pnpm@11
 
       - name: Install dependencies
         run: pnpm install --filter @workspace/guitar-tuner...
